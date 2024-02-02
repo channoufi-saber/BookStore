@@ -1,14 +1,6 @@
 const validateRegistration = (body) => {
   let errors = {};
-  body.firstName=""
-  body.lastName=""
-  body.city=""
-  body.state=""
-  body.address=""
-  body.email=""
-  body.zipCode=""
-  body.password=""
-  body.confirmPassword=""
+  
   if (
     body.firstName.trim().length < 2 ||
     !/^[A-Za-z]+$/.test(body.firstName.trim())
