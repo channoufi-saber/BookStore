@@ -3,7 +3,7 @@ const {validateRegistration,validateLogin}=require('../validation/validation');
 const router = express.Router();
 const isEmpty=require('../utilities/utils');
 const messages=require('../utilities/messages');
-const { postRegister } = require('../services/userService');
+const { postRegister,postLogin } = require('../services/userService');
 
 
 router.get('/', (req, res) => {
@@ -21,7 +21,6 @@ router.get('/register', (req, res) => {
 router.post('/register', (req, res) => {
   const errors = validateRegistration(req.body);
   if (isEmpty(errors)) {
-    // call the backend
     postRegister(req.body)
       .then((result) => {
         res.render('login', {
@@ -31,8 +30,8 @@ router.post('/register', (req, res) => {
       })
       .catch((err) => {
         res.render('register', {
-          pagename: 'Registration'
-     //     message: err.response.data.error.message,
+          pagename: 'Registration',
+          message: err.response.data.error.message,
         });
       });
   } else {
@@ -44,6 +43,34 @@ router.post('/register', (req, res) => {
     });
   }
 });
+
+router.post('/login',(req,res)=>{
+  const errors=validateLogin(req.body);
+  if (isEmpty(errors)) {
+    postLogin(req.body)
+    .then((result)=>{
+      console.log(result.data);
+      res.render('home',{
+        pagename:'Home',
+        message:result.data.message
+      })
+    })
+    .catch((err)=>{
+      res.render('login',{
+        pagename:'Login',
+        message:err.response.data.error.message,
+      })
+    })
+  }else{
+    res.render('login',{
+      pagename:'Login',
+      body:req.body,
+      errs:errors,
+      message:messages.failed_login,
+
+    })
+  }
+})
 
 router.get('/about', (req, res) => {
   res.render('about', { pagename: 'About' });

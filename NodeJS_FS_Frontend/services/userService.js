@@ -12,8 +12,15 @@ const postRegister = async (body) => {
     email: body.email,
     password: body.password,
   });
-  console.log(result)
   return result;
 };
 
-module.exports={postRegister};
+const postLogin=async(body)=>{
+	const result=await axios.post(process.env.url+'/login',{
+		email:body.email,
+		password:body.password,
+	});
+	return result;
+}
+
+module.exports={postRegister,postLogin};
