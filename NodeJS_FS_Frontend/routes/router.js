@@ -93,5 +93,10 @@ router.get('/about', (req, res) => {
   res.render('about', { pagename: 'About',session:session });
 });
 
+router.get('/logout',(req,res)=>{
+  req.session.destroy(null);
+  res.render('home',{pagename:'Home'});
+})
+
 
 module.exports = router;
