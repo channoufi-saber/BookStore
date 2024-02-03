@@ -4,10 +4,21 @@ const router = express.Router();
 const isEmpty=require('../utilities/utils');
 const messages=require('../utilities/messages');
 const { postRegister,postLogin } = require('../services/userService');
+let session=require('express-session');
+require('dotenv').config();
+
+router.use(
+  session({
+    secret:process.env.secret,
+    resave:false,
+    saveUninitialized:true,
+  })
+  );
 
 
 router.get('/', (req, res) => {
-  res.render('home', { pagename: 'Home' });
+  session=req.session;
+  res.render('home', { pagename: 'Home',session:session });
 });
 
 router.get('/login', (req, res) => {
@@ -45,14 +56,19 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login',(req,res)=>{
+  session=req.session;
   const errors=validateLogin(req.body);
   if (isEmpty(errors)) {
     postLogin(req.body)
     .then((result)=>{
       console.log(result.data);
+      session.name=result.data.user.firstName;
+      session.logged=result.data.logged;
+      session.token=result.data.token;
       res.render('home',{
         pagename:'Home',
-        message:result.data.message
+        message:result.data.message,
+        session:session,
       })
     })
     .catch((err)=>{
@@ -73,7 +89,8 @@ router.post('/login',(req,res)=>{
 })
 
 router.get('/about', (req, res) => {
-  res.render('about', { pagename: 'About' });
+  session=req.session;
+  res.render('about', { pagename: 'About',session:session });
 });
 
 
