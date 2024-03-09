@@ -1,24 +1,20 @@
-const express=require('express')
-const router=express.Router();
+const express = require('express');
+const router = express.Router();
+const {
+  getAllBooks,
+  getBookById,
+  postBook,
+  updateBook,
+  deleteBook,
+} = require('../services/bookService');
+const auth = require('../auth/authorization');
+//router.get('/', [auth, getAllBooks]);
+router.get('/', getAllBooks);
+//router.get('/:bookId', [auth, getBookById]);
+router.get('/:bookId', getBookById);
+//router.post('/', [auth, postBook]);
+router.post('/', postBook);
+router.put('/:bookId', [auth, updateBook]);
+router.delete('/:bookId', [auth, deleteBook]);
 
-router.get('/',(req,res,next)=>{
-	res.status(200).json({
-		message:'Successful - GET',
-		metadata: {
-      hostname: req.hostname,
-      method: req.method,
-    },
-
-	})
-})
-
-
-router.get('/:id',(req,res,next)=>{
-	res.status(200).json({
-		id:req.params.id,
-		message:'Successful - GET',
-		
-	})
-})
-
-module.exports=router;
+module.exports = router;
