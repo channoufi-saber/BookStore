@@ -40,7 +40,7 @@ try{
 			);
 		if(result){
 			loggedUser.password=null;
-			const token=jwt.sign({user:loggedUser},process.env.jwt_secret);
+			const token=jwt.sign({user:loggedUser},process.env.jwt);
 			return res.status(201).json({
 				user:loggedUser,
 				logged:true,

@@ -9,11 +9,9 @@ const {
 const router = express.Router();
 const auth = require('../auth/authorization');
 
-//router.post('/', [auth, postAuthor]);
-router.post('/', postAuthor);
+router.post('/', [auth, postAuthor]);
 
-//router.get('/', [auth, getAuthors]);
-router.get('/', getAuthors);
+router.get('/', [auth, getAuthors]);
 
 router.get('/:authorId', [auth, getAuthorsById]);
 
